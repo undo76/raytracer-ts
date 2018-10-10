@@ -1,18 +1,27 @@
 export type tuple = number[];
+export const tuple = (x: number, y: number, z: number, w: number): tuple => [
+  x,
+  y,
+  z,
+  w,
+];
 
+export type vector = tuple;
 export const vector = (x: number, y: number, z: number): tuple => [x, y, z, 0];
+
+export type point = tuple;
 export const point = (x: number, y: number, z: number): tuple => [x, y, z, 1];
 
 export type color = [number, number, number];
 export const color = (r: number, g: number, b: number): color => [r, g, b];
 
 export const mapTuple = (f: (value: number) => number) => (t: tuple) =>
-  t.map(f);
+  t.map(f) as tuple;
 
 export const zipTupleWith = (f: (a: number, b: number) => number) => (
   t1: tuple,
   t2: tuple
-) => t1.map((x, i) => f(x, t2[i]));
+) => t1.map((x, i) => f(x, t2[i])) as tuple;
 
 export const add = zipTupleWith((x, y) => x + y);
 export const sub = zipTupleWith((x, y) => x - y);
@@ -37,10 +46,16 @@ export const areClose = (
 export const dot = (t1: tuple, t2: tuple): number =>
   mul(t1, t2).reduce((acc, x) => acc + x, 0);
 
-// Only valid for 3D vectors
-export const cross = (t1: tuple, t2: tuple): tuple =>
+export const cross = (t1: vector, t2: vector): vector =>
   vector(
     t1[1] * t2[2] - t1[2] * t2[1],
     t1[2] * t2[0] - t1[0] * t2[2],
     t1[0] * t2[1] - t1[1] * t2[0]
   );
+
+export const clamp = (min: number, max: number) => {
+  return (v: number) => Math.max(Math.min(v, max), min);
+};
+
+export const clampTuple = (min: number, max: number) =>
+  mapTuple(clamp(min, max));

@@ -14,6 +14,7 @@ import {
   areClose,
   dot,
   cross,
+  tuple,
 } from '../tuple';
 
 describe('Vector creation', () => {
@@ -31,35 +32,31 @@ describe('Point creation', () => {
 });
 
 describe('Map tuple', () => {
-  const a = [1, 2, 3, 4];
+  const a = tuple(1, 2, 3, 4);
   test('Identity', () => {
     const identity = (x: number) => x;
     expect(mapTuple(identity)(a)).toEqual(a);
   });
 
+
   test('Double', () => {
     const double = (x: number) => 2 * x;
     expect(mapTuple(double)(a)).toEqual([2, 4, 6, 8]);
   });
-
-  test('Double/empty', () => {
-    const double = (x: number) => 2 * x;
-    expect(mapTuple(double)([])).toEqual([]);
-  });
 });
 
 describe('Tuple operations', () => {
-  const a = [10, 20],
-    b = [1, 2];
+  const a = [10, 20, 0, 0] as tuple,
+    b = [1, 2, 0, 0] as tuple;
 
-  test('add', () => expect(add(a, b)).toEqual([11, 22]));
-  test('sub', () => expect(sub(a, b)).toEqual([9, 18]));
-  test('mul', () => expect(mul(a, b)).toEqual([10, 40]));
-  test('div', () => expect(div(a, b)).toEqual([10, 10]));
-  test('neg', () => expect(neg(a)).toEqual([-10, -20]));
-  test('smul', () => expect(smul(a, 2)).toEqual([20, 40]));
-  test('neg', () => expect(sdiv(a, 2)).toEqual([5, 10]));
-  test('magnitude', () => expect(magnitude([0, 0, 0])).toEqual(0));
+  test('add', () => expect(add(a, b)).toEqual([11, 22, 0, 0]));
+  test('sub', () => expect(sub(a, b)).toEqual([9, 18, 0, 0]));
+  test('mul', () => expect(mul(a, b)).toEqual([10, 40, 0, 0]));
+  test('div', () => expect(div(a, b)).toEqual([10, 10, NaN, NaN]));
+  test('neg', () => expect(neg(a)).toEqual([-10, -20, -0, -0]));
+  test('smul', () => expect(smul(a, 2)).toEqual([20, 40, 0, 0]));
+  test('neg', () => expect(sdiv(a, 2)).toEqual([5, 10, 0, 0]));
+  test('magnitude', () => expect(magnitude([0, 0, 0, 0])).toEqual(0));
   test('magnitude', () => expect(magnitude(vector(3, 4, 0))).toEqual(5));
   test('normalize', () =>
     expect(
@@ -68,6 +65,8 @@ describe('Tuple operations', () => {
   test('normalize', () =>
     expect(magnitude(normalize(vector(1, 2, 3)))).toBeCloseTo(1));
   test('dot', () => expect(dot(vector(1, 2, 3), vector(2, 3, 4))).toEqual(20));
-  test('cross', () => expect(cross(vector(1, 2, 3), vector(2, 3, 4))).toEqual(vector(-1, 2, -1)));
-  test('cross', () => expect(cross(vector(2, 3, 4), vector(1, 2, 3))).toEqual(vector(1, -2, 1)));
+  test('cross', () =>
+    expect(cross(vector(1, 2, 3), vector(2, 3, 4))).toEqual(vector(-1, 2, -1)));
+  test('cross', () =>
+    expect(cross(vector(2, 3, 4), vector(1, 2, 3))).toEqual(vector(1, -2, 1)));
 });
