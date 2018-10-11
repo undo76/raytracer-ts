@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Image writer canvas_to_ppm 1`] = `
+exports[`Canvas PPM conversion 1`] = `
 "P3
 4 3
 255

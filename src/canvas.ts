@@ -1,4 +1,4 @@
-import { color, clamp, clampTuple } from './tuple';
+import { color, clampTuple } from './types';
 
 export default class Canvas {
   public readonly width: number;
@@ -19,7 +19,9 @@ export default class Canvas {
   }
 
   public setPixel(x: number, y: number, c: color) {
-    this.pixels[y * this.width + x] = c;
+    if (x < this.width && y < this.height) {
+      this.pixels[y * this.width + x] = c;
+    }
   }
 
   public pixelAt(x: number, y: number): color {

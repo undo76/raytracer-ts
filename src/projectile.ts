@@ -1,4 +1,4 @@
-import { vector, point, add, normalize, color } from './tuple';
+import { vector, point, add, normalize, color, smul } from './types';
 import Canvas from './canvas';
 
 interface World {
@@ -25,13 +25,13 @@ const w = {
 
 let p = {
   position: point(0, 1, 0),
-  velocity: normalize(vector(1, 1, 0)),
+  velocity: smul(normalize(vector(1, 1, 0)), 7),
 };
 
-const canvas = new Canvas(10, 10);
+const canvas = new Canvas(500, 500);
 while (p.position[1] >= 0) {
   p = tick(w, p);
-  canvas.setPixel(Math.round(p.position[0]), Math.round(p.position[1]), color(1, 0, 1));
+  canvas.setPixel(Math.floor(p.position[0]), 500 - Math.floor(p.position[1]), color(1, 0, 0));
   // console.log(p.position);
 }
 

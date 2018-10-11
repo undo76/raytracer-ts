@@ -15,7 +15,7 @@ import {
   dot,
   cross,
   tuple,
-} from '../tuple';
+} from '../types';
 
 describe('Vector creation', () => {
   test('Returns a tuple with last component 0', () => {
