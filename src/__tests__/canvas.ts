@@ -1,11 +1,14 @@
-import { color } from '../types';
+import { Color } from '../types';
 
 import Canvas from '../canvas';
 
 describe('Canvas', () => {
   let myCanvas: Canvas;
-  const black = color(0, 0, 0);
-  const blue = color(0, 0, 1);
+  const black = Color(0, 0, 0);
+  const blue = Color(0, 0, 1);
+  const red = Color(1, 0, 0);
+  const green = Color(0, 1, 0);
+  const white = Color(1, 1, 1);
 
   beforeEach(() => {
     myCanvas = new Canvas(10, 20);
@@ -24,13 +27,19 @@ describe('Canvas', () => {
     }
   });
 
-  test('Setting a color', () => {
-    myCanvas.setPixel(3, 5, blue);
-    expect(myCanvas.pixelAt(0, 0)).toEqual(black);
-    expect(myCanvas.pixelAt(3, 5)).toEqual(blue);
+  test.each`
+    x    | y    | c
+    ${0} | ${0} | ${green}
+    ${1} | ${2} | ${red}
+    ${2} | ${1} | ${black}
+    ${2} | ${1} | ${blue}
+    ${2} | ${2} | ${white}
+  `('Setting pixel ($x, $y) to Color $c', ({ x, y, c }) => {
+    myCanvas.setPixel(x, y, c);
+    expect(myCanvas.pixelAt(x, y)).toEqual(c);
   });
 
-  test('Setting a color out of bounds', () => {
+  test('Setting a Color out of bounds', () => {
     myCanvas.setPixel(10, 20, blue);
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
@@ -40,7 +49,7 @@ describe('Canvas', () => {
   });
 
   test('PPM conversion', () => {
-    const red = color(2, 0.1, -1);
+    const red = Color(2, 0.1, -1);
     const canvas = new Canvas(4, 3, red);
     const ppm = canvas.toPpmString(9);
     expect(ppm).toMatchSnapshot();

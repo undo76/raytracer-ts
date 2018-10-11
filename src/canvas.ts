@@ -1,18 +1,18 @@
-import { color, clampTuple, clamp } from './types';
+import { Color, clampTuple, clamp } from './types';
 
 export default class Canvas {
   public readonly width: number;
   public readonly height: number;
   private readonly pixels: number[];
 
-  constructor(width: number, height: number, fillColor = color(0, 0, 0)) {
+  constructor(width: number, height: number, fillColor = Color(0, 0, 0)) {
     this.width = width;
     this.height = height;
     this.pixels = new Array<number>(width * height * 3);
     this.fill(fillColor);
   }
 
-  public fill(c: color): void {
+  public fill(c: Color): void {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
         this.setPixel(j, i, c);
@@ -20,7 +20,7 @@ export default class Canvas {
     }
   }
 
-  public setPixel(x: number, y: number, c: color): void {
+  public setPixel(x: number, y: number, c: Color): void {
     if (x < this.width && y < this.height) {
       const start = 3 * (y * this.width + x);
       for (let i = 0; i < 3; i++) {
@@ -29,9 +29,9 @@ export default class Canvas {
     }
   }
 
-  public pixelAt(x: number, y: number): color {
+  public pixelAt(x: number, y: number): Color {
     const start = 3 * (y * this.width + x);
-    return this.pixels.slice(start, start + 3) as color;
+    return this.pixels.slice(start, start + 3) as Color;
   }
 
   public toPpmString(chunkSize = 60): string {
