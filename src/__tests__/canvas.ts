@@ -42,7 +42,7 @@ describe('Canvas', () => {
   test('PPM conversion', () => {
     const red = color(2, 0.1, -1);
     const canvas = new Canvas(4, 3, red);
-    const ppm = canvas.toPpmString();
+    const ppm = canvas.toPpmString(9);
     expect(ppm).toMatchSnapshot();
   });
 });

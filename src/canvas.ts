@@ -1,34 +1,40 @@
-import { color, clampTuple } from './types';
+import { color, clampTuple, clamp } from './types';
 
 export default class Canvas {
   public readonly width: number;
   public readonly height: number;
-  private readonly pixels: color[];
+  private readonly pixels: number[];
 
   constructor(width: number, height: number, fillColor = color(0, 0, 0)) {
     this.width = width;
     this.height = height;
-    this.pixels = new Array<color>(width * height);
+    this.pixels = new Array<number>(width * height * 3);
     this.fill(fillColor);
   }
 
-  public fill(c: color) {
-    for (let i = 0; i < this.pixels.length; i++) {
-      this.pixels[i] = c;
+  public fill(c: color): void {
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
+        this.setPixel(j, i, c);
+      }
     }
   }
 
-  public setPixel(x: number, y: number, c: color) {
+  public setPixel(x: number, y: number, c: color): void {
     if (x < this.width && y < this.height) {
-      this.pixels[y * this.width + x] = c;
+      const start = 3 * (y * this.width + x);
+      for (let i = 0; i < 3; i++) {
+        this.pixels[start + i] = c[i];
+      }
     }
   }
 
   public pixelAt(x: number, y: number): color {
-    return this.pixels[y * this.width + x];
+    const start = 3 * (y * this.width + x);
+    return this.pixels.slice(start, start + 3) as color;
   }
 
-  public toPpmString(chunkSize = 10): string {
+  public toPpmString(chunkSize = 60): string {
     return this.ppmHeader() + this.ppmContents(chunkSize) + '\n';
   }
 
@@ -38,16 +44,12 @@ export default class Canvas {
 
   private ppmContents(chunkSize: number): string {
     const contents: string[] = [];
-    const clampPixel = clampTuple(0, 1.0);
+    const clampChannel = (c: number) => clamp(0, 255)(Math.floor(c * 255));
 
     for (let i = 0, l = this.pixels.length; i < l; i += chunkSize) {
       const chunk = this.pixels
         .slice(i, i + chunkSize)
-        .map(c =>
-          clampPixel(c)
-            .map(v => Math.floor(v * 255))
-            .join(' ')
-        )
+        .map(clampChannel)
         .join(' ');
       contents.push(chunk);
     }
