@@ -21,7 +21,7 @@ describe('Canvas', () => {
 
   test('Every pixel is black by default', () => {
     for (let x = 0; x < 10; x++) {
-      for (let y = 0; y < 10; y++) {
+      for (let y = 0; y < 20; y++) {
         expect(myCanvas.pixelAt(x, y)).toEqual(black);
       }
     }
@@ -40,9 +40,12 @@ describe('Canvas', () => {
   });
 
   test('Setting a Color out of bounds', () => {
-    myCanvas.setPixel(10, 20, blue);
+    myCanvas.setPixel(10, 1, blue);
+    myCanvas.setPixel(1, 20, red);
+    myCanvas.setPixel(-1, 20, green);
+    myCanvas.setPixel(1, -1, white);
     for (let x = 0; x < 10; x++) {
-      for (let y = 0; y < 10; y++) {
+      for (let y = 0; y < 20; y++) {
         expect(myCanvas.pixelAt(x, y)).toEqual(black);
       }
     }

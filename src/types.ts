@@ -1,19 +1,19 @@
-export type Tuple = number[];
-export const Tuple = (x: number, y: number, z: number, w: number): Tuple => [
+export type Tuple = Float64Array;
+export const Tuple = (x: number, y: number, z: number, w: number): Tuple => Float64Array.of(
   x,
   y,
   z,
   w,
-];
+);
 
 export type Vector = Tuple;
-export const Vector = (x: number, y: number, z: number): Tuple => [x, y, z, 0];
+export const Vector = (x: number, y: number, z: number): Tuple => Float64Array.of(x, y, z, 0);
 
 export type Point = Tuple;
-export const Point = (x: number, y: number, z: number): Tuple => [x, y, z, 1];
+export const Point = (x: number, y: number, z: number): Tuple => Float64Array.of(x, y, z, 1);
 
-export type Color = [number, number, number];
-export const Color = (r: number, g: number, b: number): Color => [r, g, b];
+export type Color = Float64Array;
+export const Color = (r: number, g: number, b: number): Color => Float64Array.of(r, g, b);
 
 export const mapTuple = (f: (value: number) => number) => (t: Tuple) =>
   t.map(f) as Tuple;

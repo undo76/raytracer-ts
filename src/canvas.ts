@@ -1,14 +1,14 @@
-import { Color, clampTuple, clamp } from './types';
+import { Color, clamp } from './types';
 
 export default class Canvas {
   public readonly width: number;
   public readonly height: number;
-  private readonly pixels: number[];
+  private readonly pixels: Float64Array;
 
   constructor(width: number, height: number, fillColor = Color(0, 0, 0)) {
     this.width = width;
     this.height = height;
-    this.pixels = new Array<number>(width * height * 3);
+    this.pixels = new Float64Array(width * height * 3);
     this.fill(fillColor);
   }
 

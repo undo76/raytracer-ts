@@ -31,7 +31,11 @@ let p = {
 const canvas = new Canvas(500, 500);
 while (p.position[1] >= 0) {
   p = tick(w, p);
-  canvas.setPixel(Math.floor(p.position[0]), 500 - Math.floor(p.position[1]), Color(1, 0, 0));
+  canvas.setPixel(
+    Math.floor(p.position[0]),
+    500 - Math.floor(p.position[1]),
+    Color(1, 0, 0)
+  );
   // console.log(p.position);
 }
 
